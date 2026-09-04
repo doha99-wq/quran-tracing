@@ -1,5 +1,5 @@
 name: quran_tracing
-description: تطبيق نسخ القرآن الكريم بالقلم
+description: تطبيق نسخ القرآن الكريم بالقلم - مصحف المدينة
 publish_to: 'none'
 version: 1.0.0+1
 
@@ -9,9 +9,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  perfect_freehand: ^2.5.2+1
+  perfect_freehand: ^2.0.3
+  flutter_svg: ^2.0.9
 
 flutter:
   uses-material-design: true
   assets:
-    - assets/images/
+    - assets/images/001.svg
