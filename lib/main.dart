@@ -128,27 +128,26 @@ class _PagePainter extends CustomPainter {
     // خلفية الصفحة
     canvas.drawRect(Offset.zero & size, Paint()..color = const Color(0xFFFFF8E7));
 
-    // نص الفاتحة كمرجع فاتح
-    final tp = TextPainter(
-      text: const TextSpan(
-        text: 'بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ\n'
-            'الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ\n'
-            'الرَّحْمَٰنِ الرَّحِيمِ\n'
-            'مَالِكِ يَوْمِ الدِّينِ\n'
-            'إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ\n'
-            'اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ\n'
-            'صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ\n'
-            'غَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ',
-        style: TextStyle(
-          fontSize: size.width * 0.07,
-          color: const Color(0xFF8B7355).withOpacity(0.35),
-          height: 2.2,
-        ),
-      ),
-      textDirection: TextDirection.rtl,
-      textAlign: TextAlign.center,
-    )..layout(maxWidth: size.width * 0.9);
-    tp.paint(canvas, Offset((size.width - tp.width) / 2, size.height * 0.12));
+    // صورة صفحة الفاتحة من مصحف المدينة النبوية (مجمع الملك فهد)
+    try {
+      final img = const AssetImage('assets/images/fatiha_page.png');
+      final provider = img.resolve(const ImageConfiguration());
+      provider.addListener(ImageStreamListener((info, _) {
+        final paint = Paint()
+          ..colorFilter = const ColorFilter.mode(Color(0xFF8B7355), BlendMode.srcIn)
+          ..color = const Color(0xFF8B7355).withOpacity(0.35);
+        canvas.saveLayer(Offset.zero & size, Paint());
+        canvas.drawImageRect(
+          info.image,
+          Rect.fromLTWH(0, 0, info.image.width.toDouble(), info.image.height.toDouble()),
+          Offset.zero & size,
+          paint,
+        );
+        canvas.restore();
+      }));
+    } catch (_) {
+      // إذا ما لقيت الصورة بعد ما تحملت
+    }
 
     // خطوط المستخدم
     final paint = Paint()
